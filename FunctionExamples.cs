@@ -61,7 +61,12 @@ namespace Clusterising
             return c.GetElementByLocalIndex(ind);
         }
 
-        //построение рёбер графа для кластера
+        /// <summary>
+        /// Building a graph on cluster
+        /// </summary>
+        /// <param name="c">input cluster</param>
+        /// <param name="df">distance function</param>
+        /// <returns>a graph as collection of Edges</returns>
         public static ICollection<Edge> GetEdgesForCluster(Cluster c, distanceFunction df)
         {
             List<Edge> edgesRes = new List<Edge>();
@@ -90,7 +95,12 @@ namespace Clusterising
             return edgesRes;
         }
 
-        //поск связных компонент
+        /// <summary>
+        /// Searching linked components
+        /// </summary>
+        /// <param name="edges">graph as a list of edges</param>
+        /// <param name="indexes">a collection of global indexes</param>
+        /// <returns>a collection of linked components represented as collections of global indexes</returns>
         public static ICollection<ICollection<int>> GetLinkedComponents(ICollection<Edge> edges, ICollection<int> indexes)
         {
             List<ICollection<int>> components = new List<ICollection<int>>();
@@ -105,7 +115,13 @@ namespace Clusterising
             return components;
         }
 
-        //рекурсивный поиск в глубину
+        /// <summary>
+        /// Depth graph search for all linked vertexes
+        /// </summary>
+        /// <param name="freeEdges">unused edges</param>
+        /// <param name="freeIndexes">unsued indexes</param>
+        /// <param name="startInd">an index to start search</param>
+        /// <returns>found indexes</returns>
         public static List<int> DeepGraphSearch(List<Edge> freeEdges, List<int> freeIndexes, int startInd)
         {
             ICollection<Edge> tmp;
@@ -138,7 +154,13 @@ namespace Clusterising
             return res;
         }
 
-        //поиск соседей по списку рёбер
+        /// <summary>
+        /// Getting all vertex indexes that are connected to vertex with inputed index
+        /// </summary>
+        /// <param name="edges">a list of all unused edges</param>
+        /// <param name="index">start vertex index</param>
+        /// <param name="usedEdges">output index of edges used in search</param>
+        /// <returns>a collection of connected vertex indexes</returns>
         public static ICollection<int> GetAllLinkedInds(ICollection<Edge> edges, int index, out ICollection<Edge> usedEdges)
         {
             List<int> res = new List<int>();
@@ -163,7 +185,15 @@ namespace Clusterising
             return xSpc;
         }
 
-        //k ближайших 
+        /// <summary>
+        /// Finding k closest elements to the element with known local index
+        /// </summary>
+        /// <param name="localPointInd">Local index of cluster element</param>
+        /// <param name="xDist">distance function for </param>
+        /// <param name="xSpc">input cluster</param>
+        /// <param name="k">a number of closest element to search</param>
+        /// <param name="dists">out distances</param>
+        /// <returns>a collection of k closest elements as arrays of double values</returns>
         private static ICollection<double[]> FindClosest(int localPointInd, distanceFunction xDist, Cluster xSpc, int k, out double[] dists)
         {
             List<double[]> res = new List<double[]>();
@@ -421,7 +451,6 @@ namespace Clusterising
             }
         }
 
-        //TODO: запилить нетривиальное разделение+ поиск компонент связности
         public static ICollection<Cluster> SplitClusterTrivial(Cluster k1, distanceFunction yDist, clusterCenterFunction cnf, double[] cnfPars, double[] splitPars)
         {
             return new Cluster[] { k1 };
