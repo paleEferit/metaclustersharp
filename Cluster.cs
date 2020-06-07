@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Clusterising
+namespace Metaclustersharp
 {
     /// <summary>
     /// Cluster of data. Each element of cluster is represented as array of double values. 

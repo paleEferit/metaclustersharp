@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Clusterising
+namespace Metaclustersharp
 {
     //delegates for the delegate god!
     /// <summary>
