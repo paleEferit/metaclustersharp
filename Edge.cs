@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Clusterising
 {
     /// <summary>
-    /// неориентированное ребро
+    /// Unoriented graph edge
     /// </summary>
     public class Edge
     {
@@ -19,6 +19,12 @@ namespace Clusterising
 
         }
 
+        /// <summary>
+        /// Edge constructor
+        /// </summary>
+        /// <param name="d">edge length</param>
+        /// <param name="v1">first vertex index</param>
+        /// <param name="v2">second vertex index</param>
         public Edge(double d, int v1, int v2)
         {
             this.dist = d;
@@ -26,6 +32,9 @@ namespace Clusterising
             this.ind2 = v2;
         }
 
+        /// <summary>
+        /// Getting edge length
+        /// </summary>
         public double Distance
         {
             get
@@ -34,6 +43,9 @@ namespace Clusterising
             }
         }
 
+        /// <summary>
+        /// Gettig first vertex index
+        /// </summary>
         public int V1
         {
             get
@@ -42,6 +54,9 @@ namespace Clusterising
             }
         }
 
+        /// <summary>
+        /// Getting second vertex index
+        /// </summary>
         public int V2
         {
             get
@@ -50,16 +65,26 @@ namespace Clusterising
             }
         }
 
+        /// <summary>
+        /// Check if edge has vertex
+        /// </summary>
+        /// <param name="ind">vertex index to check</param>
+        /// <returns></returns>
         public bool ContainsV(int ind)
         {
             return this.ind2 == ind || this.ind1 == ind;
         }
 
+        /// <summary>
+        /// Getting opposite vertex to the input
+        /// </summary>
+        /// <param name="v">Index of vertex for the opposite side</param>
+        /// <returns></returns>
         public int OtherSide(int v)
         {
             if (!this.ContainsV(v))
             {
-                throw new ArgumentException("Нет такой вершины");
+                throw new ArgumentException("No such vertex");
             }
             if (v == this.ind1)
             {
