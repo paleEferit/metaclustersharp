@@ -180,6 +180,13 @@ namespace Metaclustersharp
             return res;
         }
 
+        /// <summary>
+        /// A trivialized function for cases with no difference before and after space-conversion preprocessing
+        /// </summary>
+        /// <param name="xDist">distance function for input data</param>
+        /// <param name="xSpc">input data</param>
+        /// <param name="pars">conversion params, can be empty for this case</param>
+        /// <returns>came cluster as in input</returns>
         public static Cluster TrivialConversionFunction(distanceFunction xDist, Cluster xSpc, double[] pars)
         {
             return xSpc;
@@ -234,6 +241,13 @@ namespace Metaclustersharp
             return res;
         }
 
+        /// <summary>
+        /// A neighbour density oriented function for input data space-conversion preprocessing
+        /// </summary>
+        /// <param name="xDist">distance function for input data space</param>
+        /// <param name="xSpc">input data</param>
+        /// <param name="pars">array of two values [k, alpha] where k is checked neighbour count and alpha is accepded max distance to min distance ratio</param>
+        /// <returns>a set of points in statistical metrics for neighbors of [average value, mean square, median, dispersion]</returns>
         public static Cluster DensityConversionFunction(distanceFunction xDist, Cluster xSpc, double[] pars)
         {
             List<double[]> resData = new List<double[]>();
@@ -245,7 +259,7 @@ namespace Metaclustersharp
                 double[] dst;
                 List<int> checkInds = new List<int>();
                 List<double[]> pts = new List<double[]>(FindClosest(i, xDist, xSpc, k, out dst));
-                //фильтруем
+                //filtering distances by alpha parameter
                 for (int j = 0; j < dst.Length; j++)
                 {
                     for (int l = 0; l < dst.Length; l++)
@@ -270,7 +284,7 @@ namespace Metaclustersharp
                         }
                     }
                 }
-                //итог фильтрации
+                //filtering result
                 List<double> resDstI = new List<double>();
                 for (int j = 0; j < dst.Length; j++)
                 { 
@@ -279,12 +293,12 @@ namespace Metaclustersharp
                         resDstI.Add(dst[j]);
                     }
                 }
-                //подводим статистику
+                //preparing statistical data
                 double avg = AvgVal(resDstI);
                 double meanSq = MeanSq(avg, resDstI);
                 double median = Median(resDstI);
                 double disp = Dispersion(resDstI);
-                //заполняем
+                //filling
                 resData.Add(new double[] { avg, meanSq, median, disp });
                 resInds.Add(xSpc.GetGlobalIndexByLocal(i));
             }
