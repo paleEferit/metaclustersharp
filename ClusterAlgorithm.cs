@@ -125,6 +125,14 @@ namespace Metaclustersharp
             this.isSplitingTrivial = isSplitTrivial;
         }
 
+        public bool IsSplitTrivial
+        {
+            get
+            {
+                return this.isSplitingTrivial;
+            }
+        }
+
         private double GetMaxCenterToMemberDist(ICollection<Cluster> clusts, double[] centerClusterParams)
         {
             double maxDist = -1;
@@ -323,9 +331,15 @@ namespace Metaclustersharp
             double maxDist = GetMaxCenterToMemberDist(res, centerClusterParams);
             //refreshing current max distance
             double nMaxDist = maxDist;
+            //making a case for pre-defined cluster count
+            int vTargetClusterCount = targetClusterCount;
+            if ((targetClusterCount != -1) && (!this.IsSplitTrivial))
+            {
+                vTargetClusterCount = targetClusterCount / 2;
+            }
             /*unite until the end*/
             int oldClusterCount = selectedData.Size, newClusterCount = res.Count;
-            while ((((targetClusterCount != -1) && (res.Count > targetClusterCount)) || (nMaxDist/maxDist<uniteThresholdRatio)) && (newClusterCount!=oldClusterCount))
+            while ((((vTargetClusterCount != -1) && (res.Count > vTargetClusterCount)) || (nMaxDist/maxDist<uniteThresholdRatio)) && (newClusterCount!=oldClusterCount))
             {
                 oldClusterCount = newClusterCount;
                 //saving old value
@@ -338,7 +352,7 @@ namespace Metaclustersharp
                     int j;
                     for (j = 0; j < res.Count; j++)
                     {
-                        if (targetClusterCount != -1 && res.Count <= targetClusterCount)
+                        if (vTargetClusterCount != -1 && res.Count <= vTargetClusterCount)
                         {
                             break;
                         }
@@ -372,7 +386,7 @@ namespace Metaclustersharp
                     int j;
                     for (j = 0; j < res.Count; j++)
                     {
-                        if (targetClusterCount != -1 && res.Count <= targetClusterCount)
+                        if (vTargetClusterCount != -1 && res.Count <= vTargetClusterCount)
                         {
                             break;
                         }
@@ -405,7 +419,7 @@ namespace Metaclustersharp
             maxDist = nMaxDist;
             oldClusterCount = newClusterCount-1;
             /*division until the end*/
-            while ((newClusterCount!=oldClusterCount) && !this.isSplitingTrivial && (((targetClusterCount == -1) || (res.Count < targetClusterCount)) || (maxDist/nMaxDist > uniteThresholdRatio)))
+            while ((newClusterCount!=oldClusterCount) && !this.IsSplitTrivial && (((targetClusterCount == -1) || (res.Count < targetClusterCount)) || (maxDist/nMaxDist > uniteThresholdRatio)))
             {
                 oldClusterCount = newClusterCount;
                 for (int i = 0; i < res.Count; i++)
